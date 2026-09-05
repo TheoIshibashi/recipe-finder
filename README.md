@@ -1,4 +1,4 @@
-# Recipe Finder v2
+# Recipe Finder
 
 API backend em **FastAPI** que consome a [TheMealDB](https://www.themealdb.com/api.php) para buscar receitas — reconstrução de um projeto de estudo anterior, dessa vez sem banco de dados local, consumindo dados de uma API externa em tempo real.
 
@@ -48,9 +48,9 @@ Sem banco de dados: os dados vêm sempre ao vivo da API externa.
 |---|---|---|---|
 | GET | `/health` | Health check da API | ✅ Pronto |
 | GET | `/recipes/random` | Retorna uma receita aleatória | ✅ Pronto |
-| GET | `/recipes/search?name=` | Busca receitas por nome | 🚧 Planejado |
-| GET | `/recipes/{recipe_id}` | Detalhes completos de uma receita por id | 🚧 Planejado |
-| GET | `/recipes/by-ingredient?ingredient=` | Lista receitas que usam um ingrediente | 🚧 Planejado |
+| GET | `/recipes/search?name=` | Busca receitas por nome | ✅ Pronto |
+| GET | `/recipes/{recipe_id}` | Detalhes completos de uma receita por id | ✅ Pronto |
+| GET | `/recipes/by-ingredient?ingredient=` | Lista receitas que usam um ingrediente | ✅ Pronto |
 | GET | `/categories` | Lista as categorias de receitas disponíveis | 🚧 Planejado |
 
 ## Estrutura do projeto
@@ -69,7 +69,7 @@ app/
 A TheMealDB tem uma chave de teste pública (`1`) gratuita e sem necessidade de cadastro, mas com algumas restrições em relação à versão paga:
 
 - Filtro por **múltiplos ingredientes ao mesmo tempo** não está disponível (só um ingrediente por busca).
-- Endpoints da **API V2** (mais recentes) exigem chave paga.
+- Endpoints da **API** (mais recentes) exigem chave paga.
 
 Essas limitações vieram da própria documentação oficial e moldaram o escopo dos endpoints deste projeto.
 
