@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
-from app.mealdb_client import random_meal, MealDBError, lookup_by_id, search_by_name, RecipeSummary, filter_by_ingredient
-from app.schemas import Recipe, parse_recipe, parse_recipe_summary
+from app.mealdb_client import random_meal, MealDBError, lookup_by_id, search_by_name, filter_by_ingredient, list_categories
+from app.schemas import Recipe, parse_recipe, parse_recipe_summary, RecipeSummary
 
 router = APIRouter()
 
@@ -22,13 +22,13 @@ async def search_recipes(name: str) -> list[Recipe]:
     except MealDBError as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@router.get("/recipes/by_ingredient", response_model=list[RecipeSummary])
+@router.get("/recipes/by-ingredient", response_model=list[RecipeSummary])
 async def get_recipes_by_ingredient(ingredient: str) -> list[RecipeSummary]:
     try:
         meal_data_list = await filter_by_ingredient(ingredient)
         return [parse_recipe_summary(meal_data) for meal_data in meal_data_list]
     except MealDBError as e:
-            raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/recipes/{recipe_id}", response_model=Recipe)
 async def get_recipe_by_id(recipe_id: str) -> Recipe:
