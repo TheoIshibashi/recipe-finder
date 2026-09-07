@@ -51,7 +51,7 @@ Sem banco de dados: os dados vêm sempre ao vivo da API externa.
 | GET | `/recipes/search?name=` | Busca receitas por nome | ✅ Pronto |
 | GET | `/recipes/{recipe_id}` | Detalhes completos de uma receita por id | ✅ Pronto |
 | GET | `/recipes/by-ingredient?ingredient=` | Lista receitas que usam um ingrediente | ✅ Pronto |
-| GET | `/categories` | Lista as categorias de receitas disponíveis | 🚧 Planejado |
+| GET | `/categories` | Lista as categorias de receitas disponíveis | ✅ Pronto |
 
 ## Estrutura do projeto
 
