@@ -30,6 +30,14 @@ async def get_recipes_by_ingredient(ingredient: str) -> list[RecipeSummary]:
     except MealDBError as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+@router.get("/categories", response_model=list[dict])
+async def get_categories() -> list[dict]:
+    try:
+        categories = await list_categories()
+        return categories
+    except MealDBError as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 @router.get("/recipes/{recipe_id}", response_model=Recipe)
 async def get_recipe_by_id(recipe_id: str) -> Recipe:
     try:
