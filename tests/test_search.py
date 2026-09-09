@@ -1,5 +1,6 @@
 from fastapi.testclient import TestClient
 from app.main import app
+from app.mealdb_client import MealDBError
 
 client = TestClient(app)
 
@@ -31,3 +32,12 @@ def test_search_recipes(monkeypatch):
     assert data[0]["category"] == "Chicken"
     assert data[0]["ingredients"][0]["name"] == "Chicken"
     assert data[0]["ingredients"][0]["measure"] == "200g"
+
+def test_search_recipes_mealdb_error(monkeypatch):
+    async def mock_search_by_name(name: str):
+        raise MealDBError("Erro de teste")
+
+    monkeypatch.setattr("app.routes.search_by_name", mock_search_by_name)
+    response = client.get("/recipes/search?name=chicken")
+    assert response.status_code == 500
+    assert response.json() == {"detail": "Erro de teste"}
