@@ -1,5 +1,6 @@
 from fastapi.testclient import TestClient
 from app.main import app
+from app.mealdb_client import MealDBError
 
 client = TestClient(app)
 
@@ -42,5 +43,12 @@ def test_recipe_by_id_not_found(monkeypatch):
     assert response.json() == {"detail": "Receita não encontrada."}
     assert response.status_code == 404
 
+def test_recipe_by_id_mealdb_error(monkeypatch):
+    async def mock_get_recipe_by_id(recipe_id: str):
+        raise MealDBError("Erro de teste")
 
+    monkeypatch.setattr("app.routes.lookup_by_id", mock_get_recipe_by_id)
+    response = client.get("/recipes/123")
+    assert response.status_code == 500
+    assert response.json() == {"detail": "Erro de teste"}
 
