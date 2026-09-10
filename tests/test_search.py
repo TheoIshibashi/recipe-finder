@@ -41,3 +41,11 @@ def test_search_recipes_mealdb_error(monkeypatch):
     response = client.get("/recipes/search?name=chicken")
     assert response.status_code == 500
     assert response.json() == {"detail": "Erro de teste"}
+
+def test_search_route():
+    response = client.get("/recipes/search?name=")
+    assert response.status_code == 422
+
+def test_search_route_only_spaces():
+    response = client.get("/recipes/search?name=%20%20%20")
+    assert response.status_code == 422

@@ -22,3 +22,11 @@ def test_by_ingredient(monkeypatch):
     assert data[0]["id"] == "123"
     assert data[0]["name"] == "Chicken Test"
     assert data[0]["thumbnail"] is None
+
+def test_search_route():
+    response = client.get("/recipes/search?ingredients=")
+    assert response.status_code == 422
+
+def test_search_route_only_spaces():
+    response = client.get("/recipes/search?ingredients=%20%20%20")
+    assert response.status_code == 422

@@ -1,4 +1,5 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Query
+from typing import Annotated
 from app.mealdb_client import random_meal, MealDBError, lookup_by_id, search_by_name, filter_by_ingredient, list_categories
 from app.schemas import Recipe, parse_recipe, parse_recipe_summary, RecipeSummary
 
@@ -15,7 +16,7 @@ async def get_random_meal() -> Recipe:
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/recipes/search", response_model=list[Recipe])
-async def search_recipes(name: str) -> list[Recipe]:
+async def search_recipes(name: Annotated[str, Query(min_length=1, pattern=r".*\S.*")]) -> list[Recipe]:
     try:
         meal_data_list = await search_by_name(name)
         return [parse_recipe(meal_data) for meal_data in meal_data_list]
@@ -23,7 +24,7 @@ async def search_recipes(name: str) -> list[Recipe]:
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/recipes/by-ingredient", response_model=list[RecipeSummary])
-async def get_recipes_by_ingredient(ingredient: str) -> list[RecipeSummary]:
+async def get_recipes_by_ingredient(ingredient: Annotated[str, Query(min_length=1, pattern=r".*\S.*")]) -> list[RecipeSummary]:
     try:
         meal_data_list = await filter_by_ingredient(ingredient)
         return [parse_recipe_summary(meal_data) for meal_data in meal_data_list]
