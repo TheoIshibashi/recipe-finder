@@ -1,10 +1,6 @@
-from fastapi.testclient import TestClient
-from app.main import app
 from app.mealdb_client import MealDBError
 
-client = TestClient(app)
-
-def test_random_recipe(monkeypatch):
+def test_random_recipe(client, monkeypatch):
     mock_random_recipe_data = {
     "idMeal": "123",
     "strMeal": "Chicken Test",
@@ -33,7 +29,7 @@ def test_random_recipe(monkeypatch):
     assert data["instructions"] == "Cook it."
     assert data["ingredients"][0]["name"] == "Chicken"
 
-def test_random_meal_is_not_found(monkeypatch):
+def test_random_meal_is_not_found(client,monkeypatch):
     async def mock_random_meal_is_not_found():
         return None
 
@@ -42,7 +38,7 @@ def test_random_meal_is_not_found(monkeypatch):
     assert response.json() == {"detail": "Nenhuma receita aleatória encontrada."}
     assert response.status_code == 404
 
-def test_random_meal_mealdb_error(monkeypatch):
+def test_random_meal_mealdb_error(client, monkeypatch):
     async def mock_random_meal_mealdb_error():
         raise MealDBError("Erro de teste")
 

@@ -1,10 +1,6 @@
-from fastapi.testclient import TestClient
-from app.main import app
 from app.mealdb_client import MealDBError
 
-client = TestClient(app)
-
-def test_categories(monkeypatch):
+def test_categories(client,monkeypatch):
     mock_categories = [
         {"idCategory": "1", "strCategory": "Beef"},
         {"idCategory": "2", "strCategory": "Chicken"},
@@ -19,7 +15,7 @@ def test_categories(monkeypatch):
     assert response.status_code == 200
     assert response.json() == mock_categories
 
-def test_categories_mealdb_error(monkeypatch):
+def test_categories_mealdb_error(client, monkeypatch):
     async def mock_list_categories():
         raise MealDBError("Erro de teste")
 

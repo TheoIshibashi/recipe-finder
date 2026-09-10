@@ -1,9 +1,4 @@
-from fastapi.testclient import TestClient
-from app.main import app
-
-client = TestClient(app)
-
-def test_by_ingredient(monkeypatch):
+def test_by_ingredient(client, monkeypatch):
     mock_ingredients = [
         {"idMeal": "123", 
          "strMeal": "Chicken Test",
@@ -23,10 +18,10 @@ def test_by_ingredient(monkeypatch):
     assert data[0]["name"] == "Chicken Test"
     assert data[0]["thumbnail"] is None
 
-def test_search_route():
+def test_search_route(client):
     response = client.get("/recipes/search?ingredients=")
     assert response.status_code == 422
 
-def test_search_route_only_spaces():
+def test_search_route_only_spaces(client):
     response = client.get("/recipes/search?ingredients=%20%20%20")
     assert response.status_code == 422
